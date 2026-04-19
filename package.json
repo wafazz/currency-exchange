@@ -1,0 +1,36 @@
+{
+    "$schema": "https://www.schemastore.org/package.json",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "npm run tinymce:sync && vite build",
+        "dev": "npm run tinymce:sync && vite",
+        "tinymce:sync": "rm -rf public/vendor/tinymce && cp -R node_modules/tinymce public/vendor/tinymce"
+    },
+    "devDependencies": {
+        "@types/node": "^20.10.5",
+        "@types/nprogress": "^0.2.3",
+        "@types/react": "^18.2.45",
+        "@types/react-dom": "^18.2.18",
+        "@vitejs/plugin-react": "^4.2.1",
+        "axios": "^1.11.0",
+        "concurrently": "^9.0.1",
+        "laravel-vite-plugin": "^2.0.0",
+        "typescript": "^5.3.3",
+        "vite": "^7.0.7",
+        "vite-tsconfig-paths": "^4.2.2"
+    },
+    "dependencies": {
+        "@inertiajs/react": "^2.3.21",
+        "@popperjs/core": "^2.11.8",
+        "@tinymce/tinymce-react": "^6.3.0",
+        "bootstrap": "^5.3.8",
+        "bootstrap-icons": "^1.13.1",
+        "nprogress": "^0.2.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "sass": "^1.99.0",
+        "tinymce": "^8.4.0",
+        "ziggy-js": "^2.6.2"
+    }
+}
