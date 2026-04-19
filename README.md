@@ -56,31 +56,40 @@ Built on **Laravel 12** + **Inertia 2** + **React 18** + **TypeScript** + **Boot
 
 ## Setup
 
+### One-step install (recommended)
+
 ```bash
-# 1. Install dependencies
+cp .env.example .env     # edit DB_* values if needed
+./setup.sh               # installs deps, creates DB, migrates, seeds, links storage
+```
+
+Add `--fresh` to drop and recreate the database:
+
+```bash
+./setup.sh --fresh
+```
+
+### Manual steps
+
+```bash
 composer install
 npm install
-
-# 2. Environment
 cp .env.example .env
 php artisan key:generate
+php artisan app:install   # reads .env, creates DB, migrates, seeds, storage:link
+```
 
-# 3. Edit .env to match your DB
-#    DB_CONNECTION=mysql
-#    DB_HOST=127.0.0.1
-#    DB_PORT=3307
-#    DB_DATABASE=money_exchange
-#    DB_USERNAME=root
-#    DB_PASSWORD=
+The `app:install` command works standalone — run it any time you need to bootstrap a fresh DB (e.g. CI, new machine, teammate onboarding).
 
-# 4. Create database
-mysql -u root -P 3307 -e "CREATE DATABASE money_exchange;"
+### .env database values used
 
-# 5. Migrate + seed
-php artisan migrate --seed
-
-# 6. Public storage link (for logo uploads)
-php artisan storage:link
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3307
+DB_DATABASE=money_exchange
+DB_USERNAME=root
+DB_PASSWORD=
 ```
 
 ---
