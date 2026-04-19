@@ -621,9 +621,9 @@ function TrendDelta({ info }: { info?: TrendInfo }) {
 
 function gridColClass(count: number): string {
     if (count <= 4) return 'col-12 col-md-6';
-    if (count <= 6) return 'col-6 col-md-4';
-    if (count <= 9) return 'col-6 col-md-4';
-    return 'col-6 col-md-4 col-xl-3';
+    if (count <= 6) return 'col-12 col-md-4';
+    if (count <= 9) return 'col-12 col-md-4';
+    return 'col-12 col-md-4 col-xl-3';
 }
 
 function secondsAgo(iso: string, now: Date): number {
