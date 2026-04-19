@@ -9,9 +9,9 @@ use PDOException;
 
 class InstallCommand extends Command
 {
-    protected $signature = 'app:install {--fresh : Drop existing DB and start clean}';
+    protected $signature = 'app:install {--fresh : Drop existing DB and reinstall (bypasses one-time lock)}';
 
-    protected $description = 'Bootstrap the app: create DB from .env, migrate, seed, storage link.';
+    protected $description = 'Bootstrap the app: create DB from .env, migrate, seed, storage link. Runs once only.';
 
     public function handle(): int
     {
@@ -20,6 +20,24 @@ class InstallCommand extends Command
         $this->info('║      Money Exchange — First-time Setup   ║');
         $this->info('╚══════════════════════════════════════════╝');
         $this->line('');
+
+        $lockFile = storage_path('app/.installed');
+
+        if (file_exists($lockFile) && ! $this->option('fresh')) {
+            $installedAt = trim((string) @file_get_contents($lockFile));
+            $this->error('✘ Application is already installed.');
+            $this->line('');
+            $this->line("  Installed at: <fg=cyan>{$installedAt}</>");
+            $this->line("  Lock file   : <fg=cyan>{$lockFile}</>");
+            $this->line('');
+            $this->line('  To re-install (<fg=red>WIPES ALL DATA</>):');
+            $this->line('    <fg=yellow>php artisan app:install --fresh</>');
+            $this->line('');
+            $this->line('  To unlock manually:');
+            $this->line("    <fg=yellow>rm {$lockFile}</>");
+            $this->line('');
+            return self::FAILURE;
+        }
 
         if (empty(config('app.key'))) {
             $this->warn('APP_KEY missing. Generating…');
@@ -76,6 +94,10 @@ class InstallCommand extends Command
         $this->line('');
         $this->info('→ Linking storage…');
         Artisan::call('storage:link', ['--force' => true], $this->getOutput());
+
+        $dir = dirname($lockFile);
+        if (! is_dir($dir)) mkdir($dir, 0755, true);
+        file_put_contents($lockFile, now()->toDateTimeString() . "\n");
 
         $this->line('');
         $this->info('╔══════════════════════════════════════════╗');

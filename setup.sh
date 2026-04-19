@@ -18,6 +18,17 @@ if [ "$1" = "--fresh" ]; then
     yellow "→ Fresh mode: database will be dropped & recreated."
 fi
 
+LOCK_FILE="storage/app/.installed"
+if [ -f "$LOCK_FILE" ] && [ -z "$FRESH" ]; then
+    red "✘ Setup has already been run on this machine."
+    yellow "  Installed at: $(cat "$LOCK_FILE")"
+    yellow "  Lock file   : $LOCK_FILE"
+    yellow ""
+    yellow "  To re-install (WIPES ALL DATA):  ./setup.sh --fresh"
+    yellow "  To unlock manually             :  rm $LOCK_FILE"
+    exit 1
+fi
+
 if [ ! -f .env ]; then
     yellow "→ .env not found — copying from .env.example"
     cp .env.example .env
