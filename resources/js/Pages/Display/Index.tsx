@@ -1,5 +1,6 @@
 import { Head } from '@inertiajs/react';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import InstallPrompt from '@/Components/InstallPrompt';
 
 interface RateItem {
     code: string;
@@ -168,6 +169,7 @@ export default function DisplayIndex({ branch }: Props) {
         <>
             <Head title={data ? `${data.branch.name} — Live Rates` : 'Live Rates'} />
             <audio ref={audioRef} src={BEEP_SRC} preload="auto" />
+            <InstallPrompt />
             <div
                 className="min-vh-100 bg-body"
                 onMouseMove={() => {
